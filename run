@@ -3,22 +3,14 @@
 START=0
 LOOPS=100
 
-function mean {
-    awk '{ total += $1; count++ } END { print total/count }' $1
-}
-
 function run {
-    for (( i=0 ; i<$LOOPS ; i++)); do
-	./add_test 0 $1 $START $2 | tee add_test.tmp
-	cat add_test.tmp >> add_test.log
-    done
-    cat add_test.log | grep us | awk '{ print $5}' > add_test.${1}.stat
-    mean add_test.${1}.stat >> add_test.result
+    ./add_test 0 $1 $START $2 $LOOPS #| grep Average | \
+	#awk '{ print $2}' > add_test.${1}.stat
 }
 
-make clean && make
-for (( n=4 ; n<8 ; n++)); do
+for (( n=2 ; n<8 ; n++)); do
     N=$((10**n))
     gap=$N
     run $N $gap
+    sleep 1
 done
