@@ -4,4 +4,4 @@ CFLAGS+=-g
 default:$(EXE)
 
 clean:
-	rm -rf *~ $(EXE) *.stat *.log *.tmp
+	rm -rf *~ $(EXE) *.result *.tmp

@@ -1,11 +1,11 @@
 #!/bin/bash
 
 START=0
-LOOPS=100
+LOOPS=10
 
 function run {
-    ./add_test 0 $1 $START $2 $LOOPS #| grep Average | \
-	#awk '{ print $2}' > add_test.${1}.stat
+    ./add_test 0 $1 $START $2 $LOOPS | tee add_test.tmp
+    grep Average add_test.tmp | awk '{ print $3}' >> add_test.result
 }
 
 for (( n=2 ; n<8 ; n++)); do
