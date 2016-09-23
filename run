@@ -1,16 +1,24 @@
 #!/bin/bash
 
-N=$1
 START=0
-GAP=$N
+LOOPS=100
 
-make
-rm -f add_test.log add_test.stat add_test.tmp
+function mean {
+    awk '{ total += $1; count++ } END { print total/count }' $1
+}
 
-for (( i=0 ; i<100 ; i++)); do
-    ./add_test 0 $N $START $GAP | tee add_test.tmp
-    cat add_test.tmp >> add_test.log
+function run {
+    for (( i=0 ; i<$LOOPS ; i++)); do
+	./add_test 0 $1 $START $2 | tee add_test.tmp
+	cat add_test.tmp >> add_test.log
+    done
+    cat add_test.log | grep us | awk '{ print $5}' > add_test.${1}.stat
+    mean add_test.${1}.stat >> add_test.result
+}
+
+make clean && make
+for (( n=4 ; n<8 ; n++)); do
+    N=$((10**n))
+    gap=$N
+    run $N $gap
 done
-cat add_test.log | grep us | awk '{ print $5}' > add_test.${N}.stat
-rm -f add_test.tmp add_test.log
-awk '{ total += $1; count++ } END { print total/count }' add_test.${N}.stat 
