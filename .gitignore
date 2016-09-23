@@ -2,3 +2,4 @@
 *.stat
 *.tmp
 *.log
+add_test

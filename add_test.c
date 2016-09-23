@@ -5,7 +5,6 @@
 #include <sys/time.h>
 
 #define NUM_ARGS 5
-#define BRUTE 0
 
 static long elapsed(struct timeval t0, struct timeval t1)
 {
